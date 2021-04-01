@@ -1,0 +1,35 @@
+openapi: "3.0.0"
+info:
+  version: 1.0.0
+  title: Swagger Petstore
+servers:
+  - url: http://petstore.swagger.io/v2
+paths:
+  /pet:
+    post:
+      summary: Testing a plugin
+      parameters:
+        - in: path
+          name: query
+          required: true
+          schema:
+            anyOf:
+              - type: string
+      x-kong-plugin-request-validator:
+      name: request-validator
+      enabled: true     
+      config:
+        allowed_content_types:
+        - application/json
+        body_schema: null
+        parameter_schema:
+        - explode: false
+          in: path
+          name: query
+          required: true
+          schema: '{"anyOf":[{"type":"string"}]}'
+          style: simple
+        verbose_response: true
+        version: draft4
+
+      
